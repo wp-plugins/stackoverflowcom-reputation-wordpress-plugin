@@ -3,7 +3,7 @@
 Plugin Name: StackOverflow.com Reputation Widget
 Plugin URI: http://picandocodigo.net/programacion/wordpress/stackoverflow-reputation-wordpress-plugin-english/
 Description: Plugin to display your StackOverflow.com reputation on your WordPress blog as a sidebar Widget.
-Version: 0.1
+Version: 0.2
 Author: Fernando Briano
 Author URI: http://picandocodigo.net/programacion/wordpress/stackoverflow-reputation-wordpress-plugin-english/
 */
@@ -48,23 +48,28 @@ function stackoverflow_rep(){//Display
   curl_setopt($curlOb, CURLOPT_RETURNTRANSFER, TRUE);
   $so_html = curl_exec ($curlOb);
   curl_close ($curlOb);
-  if(preg_match('#(\<a href=\"\/users\/'.$so_rep_id.'\/'.$so_rep_username.'\"\>)([a-zA-Z0-9]+)([a-zA-Z0-9\/\<\>\"\ \=\&\;\-\#]+)([\<\/div\>$])#', $so_html, $regmatch)){
-    $so_username = $regmatch[2];
-    $output="User: <a href=\"http://stackoverflow.com/users/".$so_rep_id."/".$so_rep_username."\"><strong>".$so_username."</strong></a><br/>";
-    $so_stuff = $regmatch[3];
-    preg_match('#(reputation\ score\"\>)([0-9]+)#',$so_stuff, $regmatch);
-    $output.="Reputation: <strong>".$regmatch[2]."</strong><br/>";
-    if(preg_match('#([0-9]+)\ silver\ badges#', $so_stuff, $regmatch)){
-		$output.="Silver badges: ".$regmatch[1]."<br/>";
-	}
-    if(preg_match('#([0-9]+)\ bronze\ badges#', $so_stuff, $regmatch)){
-		$output.="Bronze badges: ".$regmatch[1]."<br/>";
-	}
-    if(preg_match('#([0-9]+)\ gold\ badges#', $so_stuff, $regmatch)){
-    	$output.="Gold badges: ".$regmatch[1]."<br/>";
-	}
-  }
-  echo $output;
+
+    preg_match('#(\<a href=\"\/users\/'.$so_rep_id.'\/'.$so_rep_username.'\"\>)(\<img src\=[a-zA-Z0-9\:\/\.\=\?\&\"\ ]+\ \/\>)#', $so_html, $gregmatch);
+    $so_gravatar = $gregmatch[2];
+    echo "<div style=\"text-align:right;float:right;\" >".$so_gravatar."</div>";
+
+    if(preg_match('#(\<a href=\"\/users\/'.$so_rep_id.'\/'.$so_rep_username.'\"\>)([a-zA-Z0-9]+)([a-zA-Z0-9\/\<\>\"\ \=\&\;\-\#]+)([\<\/div\>$])#', $so_html, $regmatch)){
+      $so_username = $regmatch[2];
+      $output="User: <a href=\"http://stackoverflow.com/users/".$so_rep_id."/".$so_rep_username."\"><strong>".$so_username."</strong></a><br/>";
+      $so_stuff = $regmatch[3];
+      preg_match('#(reputation\ score\"\>)([0-9]+)#',$so_stuff, $regmatch);
+      $output.="Reputation: <strong>".$regmatch[2]."</strong><br/>";
+      if(preg_match('#([0-9]+)\ silver\ badges#', $so_stuff, $regmatch)){
+	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/sbadge.png\" alt=\"Silver badges\" /> ".$regmatch[1]." ";
+      }
+      if(preg_match('#([0-9]+)\ bronze\ badges#', $so_stuff, $regmatch)){
+	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/bbadge.png\" alt=\"Silver badges\" /> ".$regmatch[1]." ";
+      }
+      if(preg_match('#([0-9]+)\ gold\ badges#', $so_stuff, $regmatch)){
+	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/gbadge.png\" alt=\"Silver badges\" /> ".$regmatch[1]." ";
+      }
+    }
+    echo $output;
 }
 
 function stackoverflow_options(){
