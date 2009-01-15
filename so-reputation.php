@@ -3,7 +3,7 @@
 Plugin Name: StackOverflow.com Reputation Widget
 Plugin URI: http://picandocodigo.net/programacion/wordpress/stackoverflow-reputation-wordpress-plugin-english/
 Description: Plugin to display your StackOverflow.com reputation on your WordPress blog as a sidebar Widget.
-Version: 0.2
+Version: 0.2.1
 Author: Fernando Briano
 Author URI: http://picandocodigo.net/programacion/wordpress/stackoverflow-reputation-wordpress-plugin-english/
 */
@@ -63,10 +63,10 @@ function stackoverflow_rep(){//Display
 	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/sbadge.png\" alt=\"Silver badges\" /> ".$regmatch[1]." ";
       }
       if(preg_match('#([0-9]+)\ bronze\ badges#', $so_stuff, $regmatch)){
-	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/bbadge.png\" alt=\"Silver badges\" /> ".$regmatch[1]." ";
+	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/bbadge.png\" alt=\"Bronze badges\" /> ".$regmatch[1]." ";
       }
       if(preg_match('#([0-9]+)\ gold\ badges#', $so_stuff, $regmatch)){
-	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/gbadge.png\" alt=\"Silver badges\" /> ".$regmatch[1]." ";
+	$output.="<img src=\"".get_option('siteurl')."/wp-content/plugins/stackoverflowcom-reputation-wordpress-plugin/img/gbadge.png\" alt=\"Gold badges\" /> ".$regmatch[1]." ";
       }
     }
     echo $output;
